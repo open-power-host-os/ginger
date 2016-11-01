@@ -21,9 +21,6 @@
     .accordion {
         @include wok-accordion();
     }
-    .navbar-default.toolbar {
-        background-color: $hosts-color !important;
-    }
 }
 
 #sanadapters-ppc-content-area,
@@ -420,5 +417,212 @@
     padding-top: 4px;
 }
 
+#audit-rules-content-area{
 
-/* End of Firmware Progress Accordion */
+  .audit-rules-loaded-enable .fa {
+    font-size: 20px;
+    color: #78d470;
+  }
+  .audit-rules-loaded-disable .fa {
+    font-size: 20px;
+    color: #9Ea3a1;
+  }
+
+  .audit-rules-persisted-enable .fa {
+    font-size: 20px;
+    color: #78d470;
+  }
+  .audit-rules-persisted-disable .fa {
+    font-size: 20px;
+    color: #9Ea3a1;
+  }
+
+  div.audit-rules-details {
+      width: 100%;
+      padding: 22px;
+      background: $table-bg-active;
+    }
+
+    .noRuleInfo {
+     background: $table-bg;
+     text-align: center;
+     min-height: 100px;
+    }
+
+   .details-list {
+      display: table;
+      flex-wrap: wrap;
+      width: 100%;
+      min-height: 100px;
+      background: $table-bg;
+      padding: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      align-items: stretch;
+      align-content: stretch;
+
+      div {
+        display: table;
+        width:50%;
+      }
+
+      > span[class^=column-] {
+          display: table-row;
+          font-size: 15px;
+          float: left;
+          align-self: flex-start;
+          flex-grow: 1;
+          width: 100%;
+      }
+
+      span[class^=header-] {
+          width: 45%;
+          display: table-cell;
+          font-family: $font-family-base;
+          font-weight: 300;
+          font-size: 12.5pt;
+          border-bottom: none;
+          border-top: 0;
+          line-height: 1.42857;
+          height: 36px;
+          padding: 6px 7%;
+          text-transform: capitalize;
+          flex:1;
+          float:left;
+          margin-top:10px;
+      }
+
+      span[class^=body-] {
+          width: 100%;
+          display: block;
+      }
+
+      span[class^=row-] {
+          display: table-cell;
+          width: 55%;
+          padding: 6px 12px;
+          font-weight: 600;
+          float:right;
+          margin-top:10px;
+          .col-value {
+            font-weight: 400;
+          }
+      }
+  }
+}
+#audit-logs-content-area,
+#audit-rules-content-area {
+  td.content {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   }
+
+   .fa {
+     cursor: pointer;
+   }
+}
+
+#audit-logs-content-area,
+#audit-dispatcher-content-area {
+  .audit-log-details {
+      width: 100%;
+      padding: 8px;
+      background: $table-bg-active;
+    }
+
+  .audit-log-info {
+      width: 100%;
+      background: $table-bg;
+      display: block;
+      min-height: 100px;
+      padding-top:10px;
+      padding-left:10px;
+    }
+
+    dl {
+      margin-bottom:0px;
+      padding-bottom: 10px;
+    }
+
+    dd {
+      padding-bottom: 15px;
+    }
+
+    .btn {
+      border-radius: 1px;
+    }
+}
+
+#auditlogReport {
+  .report{
+      max-height: 250px;
+      overflow-y: auto;
+      display: block;
+      background: $table-bg-active;
+      padding: 10px;
+      padding-top: 20px;
+      margin-top:20px;
+      border-top: 1px solid $table-border-color;
+  }
+}
+.auditmenu-action {
+    width: 100%;
+}
+
+.auditmenu-action .btn {
+    width: 100%;
+    border-radius: 0;
+}
+
+.auditmenu-action.open > .btn {
+    border-radius: $border-radius-base $border-radius-base 0 0;
+}
+
+.auditmenu-action .btn span.auditmenu-action-label {
+    font-weight: 600;
+}
+
+.auditmenu-action .btn span.auditmenu-action-count {
+    font-weight: 300;
+}
+
+.auditmenu-action .btn span.auditmenu-action-count strong {
+    font-weight: 600;
+    font-size: 11pt;
+}
+
+.auditmenu-action .dropdown-menu {
+    width: 100%;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+}
+
+.auditmenu-action.open .dropdown-menu .btn {
+    border-radius: 0;
+}
+
+.auditmenu-action.open .dropdown-menu li:last-child .btn {
+    border-radius: 0 0 $border-radius-base $border-radius-base;
+}
+
+.auditmenu-action .dropdown-menu li > .btn.disabled,
+.auditmenu-action .dropdown-menu li > .btn[disabled] {
+    opacity: 1;
+    background: #585758;
+    border-color: #585758;
+    color: #ddd;
+}
+#audit-rules-content-area {
+  .dropdown-menu {
+      min-width: 100px !important;
+  }
+}
+#backupItem > span:hover{
+overflow: visible;
+}

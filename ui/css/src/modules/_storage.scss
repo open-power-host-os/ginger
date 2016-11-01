@@ -68,9 +68,6 @@
             }
         }
     }
-    .navbar-default.toolbar {
-      background-color: $hosts-color !important;
-    }
 }
 #volume-groups-content-area,
 #file-systems-content-area,
@@ -128,7 +125,7 @@
       width:100%;
 
       th > .column-header-anchor > .icon {
-          right:40%
+          right:4%
       }
 
       thead{

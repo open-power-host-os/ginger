@@ -40,7 +40,7 @@ class RulesTests(unittest.TestCase):
     @mock.patch('wok.plugins.ginger.model.rules.RulesModel.load_audit_rule')
     def test_create_fs_rule_success(self, mock_load_audit_rule,
                                     mock_write_to_audit_rules, mock_fs_rule):
-        param = {"type": "Filesystem Rule",
+        param = {"type": "File System Rule",
                  "rule_info": {"permissions": "rwxa",
                                "file_to_watch": "/home/test_user/1.txt",
                                "key": "watch_me"}}
@@ -60,16 +60,17 @@ class RulesTests(unittest.TestCase):
     @mock.patch('wok.plugins.ginger.model.rules.RulesModel.load_audit_rule')
     def test_create_sc_rule_success(self, mock_load_audit_rule,
                                     mock_write_to_audit_rules, mock_sc_rule):
-        param = {"type": "System Rule",
+        param = {"type": "System Call Rule",
                  "rule_info": {"action": "always",
                                "filter": "exit",
                                "systemcall": "init_module,delete_module"
                                              ",finit_module",
-                               "field": ["arch=b32", "arch=b64"],
+                               "archfield": ["arch=b32", "arch=b64"],
+                               "field": ["exit=0"],
                                "key": "abc99"}}
         rule_type = '-a'
         rule = '-a always,exit -F arch=b32 -F arch=b64 -S init_module,' \
-               'delete_module,finit_module -F key=abc99'
+               'delete_module,finit_module -F exit=0 -F key=abc99'
         mock_sc_rule.return_value = rule
         mock_write_to_audit_rules.return_value = {}
         mock_load_audit_rule.return_value = {}
@@ -98,12 +99,12 @@ class RulesTests(unittest.TestCase):
         self.assertEquals(rule, rule_out)
 
     @mock.patch('wok.plugins.ginger.model.rules.RuleModel.delete_rule')
-    @mock.patch('wok.plugins.ginger.model.rules.RuleModel.reload_rules')
-    def test_delete_success(self, mock_reload, mock_delete_rule):
+    @mock.patch('wok.plugins.ginger.model.rules.RuleModel.is_rule_exists')
+    def test_delete_success(self, mock_exists, mock_delete_rule):
         rule = '-a always,exit -F arch=b32 -F arch=b64 -S init_module,' \
                'delete_module,finit_module -F key=abc99'
+        mock_exists.return_value = True
         mock_delete_rule.return_value = {}
-        mock_reload.return_value = {}
         rulemodel = RuleModel()
         rulemodel.delete(rule)
 
@@ -122,8 +123,8 @@ class RulesTests(unittest.TestCase):
         """
         rule = '-a always,exit -F arch=b32 -F arch=b64 -S init_module,' \
                'delete_module,finit_module -F key=abc99'
-        audit_info = {'loaded': 'yes', 'persisted': 'yes',
-                      'type': 'System Rule',
+        audit_info = {'loaded': 'yes', 'persisted': 'no',
+                      'type': 'System Call Rule',
                       'rule_info': {'action': u'always',
                                     'filter': u'exit',
                                     'systemcall': u'init_module,'
@@ -152,16 +153,16 @@ class RulesTests(unittest.TestCase):
                 'get_system_rule_info')
     def test_get_audit_rule_info(self, mock_system_info,
                                  mock_load_persist, mock_type):
-        rule_type = 'System Rule'
+        rule_type = 'System Call Rule'
         name = 'a always,exit -F arch=b32 -F arch=b64 -S init_module,' \
                'delete_module,finit_module -F key=abc99'
         mock_type.return_value = rule_type
         audit_info = {'rule': 'a always,exit -F arch=b32 -F '
                               'arch=b64 -S init_module,'
                               'delete_module,finit_module -F key=abc99',
-                      'type': 'System Rule'}
+                      'type': 'System Call Rule'}
         mock_load_persist.return_value = {}
-        expected_out = {'type': 'System Rule',
+        expected_out = {'type': 'System Call Rule',
                         'rule': 'a always,exit -F arch=b32 -F'
                                 ' arch=b64 -S init_module,delete_module,'
                                 'finit_module -F key=abc99'}
@@ -185,7 +186,7 @@ class RulesTests(unittest.TestCase):
                'delete_module,finit_module -F key=abc99'
         audit_info = {'loaded': 'yes',
                       'persisted': 'yes',
-                      'type': 'System Rule',
+                      'type': 'System Call Rule',
                       'rule_info': {'action': u'always',
                                     'filter': u'exit',
                                     'systemcall': u'init_module,'
@@ -221,7 +222,7 @@ class RulesTests(unittest.TestCase):
         rule = '-a always,exit -F arch=b32 -F arch=b64 -S init_module,' \
                'delete_module,finit_module -F key=abc99'
         audit_info = {'loaded': 'yes', 'persisted': 'no',
-                      'type': 'System Rule',
+                      'type': 'System Call Rule',
                       'rule_info': {'action': u'always',
                                     'filter': u'exit',
                                     'systemcall': u'init_module,'
@@ -312,7 +313,7 @@ class RulesTests(unittest.TestCase):
         """
         rule = '-a always,exit -F arch=b32 -F arch=b64 -S init_module,' \
                'delete_module,finit_module -F key=abc99'
-        rule_type = "System Rule"
+        rule_type = "System Call Rule"
         ruleModel = RuleModel()
         out_type = ruleModel.get_auditrule_type(rule)
         self.assertEquals(out_type, rule_type)

@@ -427,7 +427,6 @@ ginger.partition.deleteDASDDevicePartition = function(PartitionDevice, DeviceNam
   var vg = $('#' + PartitionDevice).children('span.column-vgname').html();
   var message = (vg == 'N/A' || vg == '')? i18n['GINPT00009M'] : i18n['GINPT00016M'];
 
-
     var settings = {
         content: message,
         confirm: i18n['GINPT00010M'],

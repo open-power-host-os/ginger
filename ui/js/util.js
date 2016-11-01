@@ -1481,3 +1481,634 @@ ginger.getPartitionsDevices = function(type,suc, err) {
        }
    });
  };
+
+/*
+* ISCSI
+*/
+
+ginger.getiSCSIqns =  function(suc , err){
+	wok.requestJSON({
+        url : 'plugins/ginger/iscsi_qns',
+        type : 'GET',
+        contentType : 'application/json',
+        dataType : 'json',
+        success : suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+    });
+}
+
+ginger.getiSCSItargets = function(content, suc, err){
+  wok.requestJSON({
+     url: 'plugins/ginger/stgserver/'+ content.ip + ':' + content.port +'/iscsitargets',
+     type: 'GET',
+     contentType: 'application/json',
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+ginger.iSCSItargetslogin = function(target, suc, err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_qns/'+ target +'/login',
+     type: 'POST',
+     contentType: 'application/json',
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+ginger.iSCSItargetslogout = function(target, suc, err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_qns/'+ target +'/logout',
+     type: 'POST',
+     contentType: 'application/json',
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+ginger.iSCSItargetsremove = function(target, suc, err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_qns/'+ target,
+     type: 'DELETE',
+     contentType: 'application/json',
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+ginger.iSCSItargetsrescan = function(target, suc, err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_qns/'+ target +'/rescan',
+     type: 'POST',
+     contentType: 'application/json',
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+ginger.getiSCSIglobalAuthdetails = function(suc, err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_auth',
+     type: 'GET',
+     contentType: 'application/json',
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+ginger.getiSCSItargetSettings = function(target,suc,err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_qns/'+target,
+     type: 'GET',
+     contentType: 'application/json',
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+ginger.iSCSIupdateTargetsettingsDetail = function(content,suc,err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_qns/'+ content.target +'/'+content.api,
+     type: 'POST',
+     contentType: 'application/json',
+     data : JSON.stringify(content.data),
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+ginger.iSCSIupdateSettingsDetail = function(content,suc,err){
+  wok.requestJSON({
+     url: 'plugins/ginger/iscsi_auth/'+content.api,
+     type: 'POST',
+     contentType: 'application/json',
+     data : JSON.stringify(content.data),
+     dataType: 'json',
+     success: suc,
+     error : err || function(data) {
+         wok.message.error(data.responseJSON.reason);
+     }
+  });
+};
+
+/**
+ * Get the Audit Rules list.
+ */
+
+ginger.getAuditRules = function(suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/rules',
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+ ginger.addFileAudit = function(filerule, suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/rules',
+         type: 'POST',
+         contentType: 'application/json',
+         data: JSON.stringify(filerule),
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.addControlAudit = function(cntrlrule, suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/rules',
+         type: 'POST',
+         contentType: 'application/json',
+         data: JSON.stringify(cntrlrule),
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.addSyscallAudit = function(syscallrule, suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/rules',
+         type: 'POST',
+         contentType: 'application/json',
+         data: JSON.stringify(syscallrule),
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.deleteAuditRule = function(ruleName, suc, err) {
+     wok.requestJSON({
+         url: '/plugins/ginger/audit/rules/' + encodeURIComponent(ruleName.trim()),
+         type: 'DELETE',
+         contentType: 'application/json',
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.LoadAuditRule = function(ruleName, suc, err) {
+     wok.requestJSON({
+         url: '/plugins/ginger/audit/rules/' + encodeURIComponent(ruleName.trim()) + "/load",
+         type: 'POST',
+         contentType: 'application/json',
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.UnLoadAuditRule = function(ruleName, suc, err) {
+     wok.requestJSON({
+         url: '/plugins/ginger/audit/rules/' + encodeURIComponent(ruleName.trim()) + "/unload",
+         type: 'POST',
+         contentType: 'application/json',
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.PersistAuditRule = function(ruleName, suc, err) {
+     wok.requestJSON({
+         url: '/plugins/ginger/audit/rules/' + encodeURIComponent(ruleName.trim()) + "/persist",
+         type: 'POST',
+         contentType: 'application/json',
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.retrieveConfigInfo = function(suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/conf',
+         type: 'GET',
+         contentType: 'application/json',
+         dataType: 'json',
+         resend: true,
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.loadPredefinedRule = function(path, suc, err) {
+     wok.requestJSON({
+         url: '/plugins/ginger/audit/load_rules',
+         type: 'POST',
+         contentType: 'application/json',
+         data: JSON.stringify(path),
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.AuditConfig = function(configvalues, suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/conf',
+         type: 'PUT',
+         contentType: 'application/json',
+         data: JSON.stringify(configvalues),
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.EditAuditRule = function(ruleName, updatedRule, suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/rules/' + encodeURIComponent(ruleName.trim()),
+         type: 'PUT',
+         contentType: 'application/json',
+         data: JSON.stringify(updatedRule),
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.EditSyscallAudit = function(ruleName, updatedRule, suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/rules/' + ruleName.replace('&lt;','<').replace('&gt;','>'),
+         type: 'PUT',
+         contentType: 'application/json',
+         data: JSON.stringify(updatedRule),
+         dataType: 'json',
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+ ginger.listofsyscall = function(suc, err) {
+     wok.requestJSON({
+         url: 'plugins/ginger/audit/syscall',
+         type: 'GET',
+         contentType: 'application/json',
+         dataType: 'json',
+         resend: true,
+         success: suc,
+         error: err || function(data) {
+             wok.message.error(data.responseJSON.reason);
+         }
+     });
+ };
+/**
+  * Get the Audit logs list.
+  */
+ ginger.getAuditLogs = function(suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/logs',
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * Get the Audit logs filter.
+  */
+ ginger.filterAuditLogs = function(params, suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/logs?_filter='+encodeURIComponent(params),
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * Get the Audit summary report.
+  */
+ ginger.getAuditSummaryReport = function(suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/reports',
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * Get the Audit report after filtering.
+  */
+ ginger.getAuditReport = function(params,suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/reports?_filter='+encodeURIComponent(params),
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+ /**
+  * Get the report graph.
+  */
+ ginger.getReportGraph = function(params,suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/graphs?_filter='+params,
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+/**
+  * Get the Audit dispatcher plugin.
+  */
+ ginger.getDispatcherPlugin = function(suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/auditdisp/plugins',
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * Get the audit dispatcher status.
+  */
+ ginger.getAuditStatus = function(suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/conf',
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * Change audit dispatcher status.
+  */
+ ginger.changeAuditDispatcherStatus = function(action,suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/audit/conf/audisp_'+action,
+       type : 'POST',
+       contentType : 'application/json',
+       dataType : 'json',
+       data :'',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * get audit dispatcher details.
+  */
+ ginger.getDispatcherConfiguration = function(suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/auditdisp',
+       type : 'GET',
+       contentType : 'application/json',
+       dataType : 'json',
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * update audit dispatcher details.
+  */
+ ginger.updateDispatcherConfiguration = function(params, suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/auditdisp',
+       type : 'PUT',
+       contentType : 'application/json',
+       dataType : 'json',
+       data : JSON.stringify(params),
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+ /**
+  * update audit dispatcher plugin.
+  */
+ ginger.updateDispatcherPlugin = function(name,params, suc, err) {
+   wok.requestJSON({
+       url : '/plugins/ginger/auditdisp/plugins/'+name,
+       type : 'PUT',
+       contentType : 'application/json',
+       dataType : 'json',
+       data : JSON.stringify(params),
+       success : suc,
+       error : err || function(data) {
+           wok.message.error(data.responseJSON.reason);
+       }
+   });
+ };
+
+/**
+ * Systems Platform Management
+ */
+ginger.getServer = function(suc, err) {
+     wok.requestJSON({
+        url: 'plugins/ginger/servers',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}
+ginger.addServer = function(parms, suc, err){
+    $.ajax({
+        url : "plugins/ginger/servers",
+        type : 'POST',
+        contentType : 'application/json',
+        dataType : 'json',
+        data : JSON.stringify(parms),
+        success: suc,
+        error: err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+    });
+};
+ginger.UpdServer = function(name, params, suc, err){
+    $.ajax({
+        url : 'plugins/ginger/servers/' + name,
+        type : 'PUT',
+        contentType : 'application/json',
+        dataType : 'json',
+        data : JSON.stringify(params),
+        success: suc,
+        error: err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+    });
+};
+ginger.removeServer = function(moduleId, suc, err) {
+    wok.requestJSON({
+        url: 'plugins/ginger/servers/' + moduleId,
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}
+ginger.serverPowerOn = function(moduleId, suc, err) {
+    wok.requestJSON({
+        url: 'plugins/ginger/servers/' + moduleId + '/poweron',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}
+ginger.serverPowerOff = function(moduleId, suc, err) {
+    wok.requestJSON({
+        url: 'plugins/ginger/servers/' + moduleId + '/poweroff',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}
+ginger.getSel = function(serverName, suc, err) {
+     wok.requestJSON({
+        url: 'plugins/ginger/servers/'+ serverName + '/sels',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+ }
+ginger.deleteSel = function(serverName, eventId, suc, err) {
+     wok.requestJSON({
+        url: 'plugins/ginger/servers/'+ serverName + '/sels/' + eventId,
+        type: 'DELETE',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}
+ginger.getSdr = function(serverName, suc, err) {
+     wok.requestJSON({
+        url: 'plugins/ginger/servers/'+ serverName + '/sensors',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}
+ginger.getSdrType = function(serverName, sdrType, suc, err) {
+     wok.requestJSON({
+        url: 'plugins/ginger/servers/'+ serverName + '/sensors' + '?sensor_type=' + sdrType,
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}
+ginger.getFru = function(serverName, suc, err) {
+     wok.requestJSON({
+        url: 'plugins/ginger/servers/'+ serverName + '/frus',
+        type: 'GET',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: suc,
+        error : err || function(data) {
+            wok.message.error(data.responseJSON.reason);
+        }
+     });
+}

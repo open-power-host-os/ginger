@@ -111,6 +111,8 @@ messages = {
     "GINNET0093E": _("SR-IOV is already disabled (no virtual functions enabled) in interface %(name)s."),
     "GINNET0094E": _("Activation of vlan/bond interface '%(name)s' failed. Please "
                      "refresh and try again. "),
+    "GINNET0095E": _("Activation of vlan interface '%(name)s' failed. "
+                     "Try disabling the DHCP option in IPv4 settings tab."),
 
     "GINUSER0001E": _("Specify name, password, group and profile for the new "
                       "user."),
@@ -381,7 +383,7 @@ messages = {
     "GINAUD0009E": _("Error occurred in fetching filesystem rule info. %(error)s"),
     "GINAUD0010E": _("Rule '%(name)s' is not persisted in the rules file."),
     "GINAUD0011E": _("Error occurred in modifying the rule '%(name)s'."),
-    "GINAUD0012E": _("The rule '%(name)s' cannot be deleted. "),
+    "GINAUD0012E": _("The rule '%(name)s' cannot be unloaded or is already unloaded. "),
     "GINAUD0013E": _("Error occurred in unload operation of rule '%(name)s' ."),
     "GINAUD0014E": _("Error occurred in getting the filtered logs."),
     "GINAUD0015E": _("Error occurred in getting the unfiltered logs."),
@@ -389,8 +391,7 @@ messages = {
     "GINAUD0017E": _("Error occurred in getting the reports."),
     "GINAUD0018E": _("Loading the rule '%(name)s' failed."),
     "GINAUD0019E": _("Error occurred in loading predefined rules."),
-    "GINAUD0020E": _("Error occurred in persisting the rules."
-                     " The rule '%(name)s' already exists."),
+    "GINAUD0020E": _("The rule '%(name)s' is already persisted."),
     "GINAUD0021E": _("The predefined rules files doesn't exist."),
     "GINAUD0022E": _("Execution on auditctl command failed with error '%(error)s'"),
     "GINAUD0023E": _("Error in retrieving the audit conf file details. "),
@@ -420,6 +421,16 @@ messages = {
     "GINSDR00001E": _("Unable to get SDR information for server %(name)s. IPMI Command error %(err)s , rc = %(rc)s"),
     "GINSDR00002E": _("Cannot process SDR entry %(sdrString)s"),
     "GINSDR00003E": _("%(sensor_type)s is not a valid sensor type"),
+    "GINAUDISP0001E": _("Error occured in retrieving the info for the plugin %(name)s."),
+    "GINAUDISP0002E": _("Error occured in deleting from the file %(name)s."),
+    "GINAUDISP0003E": _("Error occured in writing to the file %(name)s."),
+    "GINAUDISP0004E": _("Error occured in updating data in the file %(name)s."),
+    "GINAUDISP0005E": _("Error in retrieving the info for the audit dispatcher conf file."),
+    "GINAUDISP0006E": _("Conf file does not exist for the plugin: %(name)s"),
+
+    "GINFRU00001E": _("Unable to get FRU Device information for server %(name)s. IPMI Command error %(err)s. rc = %(rc)s"),
+    "GINFRU00002E": _("FRU Device %(fru_id)s is not present in server %(name)s"),
+    "GINFRU00003E": _("Cannot process FRU Device information entry %(eachFru)s"),
 
     # These messages (ending with L) are for user log purposes
     "GINAUD0001L": _("Create audit rule '%(rule)s' type '%(type)s'"),
@@ -504,4 +515,6 @@ messages = {
     "GINVG0002L": _("Remove host volume group '%(ident)s'"),
     "GINVG0003L": _("Extend host volume group '%(ident)s'"),
     "GINVG0004L": _("Reduce host volume group '%(ident)s'"),
+    "GINAUDISP0001L": _("Updated the auditdisp plugin conf file '%(ident)s'."),
+    "GINAUDISP0002L": _("Updated the auditdisp conf file '%(ident)s'.")
 }
