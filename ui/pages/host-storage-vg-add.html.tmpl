@@ -39,7 +39,7 @@
           <div class="form-group" id="vg-add-name">
             <label class="control-label col-sm-4" for="vg-name-input">$_("Name")</label>
             <div class="col-sm-6">
-             <input id="vg-name-input" name="vgName" type="text" class="form-control" placeholder="VG name"/>
+             <input id="vg-name-input" name="vgName" type="text" class="form-control" placeholder="$_('VG name')"/>
             </div>
           </div>
           <div class="panel-group" id="pvDetails">
@@ -104,6 +104,14 @@
                   </thead>
                   <tbody></tbody>
                 </table>
+              </div>
+              <div class="wok-mask selectedPv-loader">
+                <div class="wok-mask-loader-container">
+                  <div class="wok-mask-loading">
+                    <div class="wok-mask-loading-icon"></div>
+                    <div class="wok-mask-loading-text">$_("Loading...")</div>
+                  </div>
+                </div>
               </div>
           </div>
         </div>

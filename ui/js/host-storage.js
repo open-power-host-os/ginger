@@ -62,7 +62,7 @@ ginger.loadFileSystemDetails = function() {
     "title": i18n['GINTITLE0004M']
   }, {
     "column-id": "use%",
-    "type": 'string',
+    "type": 'numeric',
     "title": i18n['GINTITLE0005M'],
     "width": "35%",
     "formatter": "percentage-used"
@@ -352,6 +352,11 @@ ginger.initVolumeGroupGridData = function() {
        });
      });
      }
+    });
+
+    //Volume Group resize handler
+    $('#volume-group-edit-btn').on('click',function(){
+      ginger.vgResizeHandler(volumeGroupTable.rows('.selected').data());
     });
 
     // Add event listener for opening and closing details
