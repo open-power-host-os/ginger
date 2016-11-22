@@ -344,6 +344,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
             <div id="users-ppc-content-area" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                 <div class="btn-group">
                     <button class="btn btn-primary actBtn add-user" type="submit" data-toggle="modal" data-target="#hostUserAdd"><i class="fa fa-plus-circle"></i> $_("Add User")</button>
+                    <button class="btn btn-primary actBtn" id="usrMgmtRefreshBtn"><i class="fa fa-refresh"></i> $_("Refresh")</button>
                 </div>
                 <span id='alert-modal-user-container' style='display: none;'></span>
                 <div class="wok-datagrid" id="usermangementgrid">
@@ -578,6 +579,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
               <div class="row">
                 <span class='add-new-filter'><a  class="add-filter btn btn-link" href="#" style="padding-left:0px;"><i class="fa fa-plus-circle"></i> $_("Add new filter")</a></span>
               </div>
+              <span id="addfielderror-message" style="display:none;"></span>
               <div class="row hidden" id="filterList">
                   <div class="col-md-12">
                       <div class="col-md-5">
@@ -596,6 +598,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
                   <label class="check-all">
                       <input type="checkbox" id="interpret" style="margin-top:10px;">$_("Interpret  numeric  entities into text")
                   </label>
+              </div>
+	      <div class="wok-mask Audit-log-loader" hidden>
+                <div class="wok-mask-loader-container">
+                  <div class="wok-mask-loading">
+                    <div class="wok-mask-loading-icon"></div>
+                    <div class="wok-mask-loading-text">$_("Please wait...")</div>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
@@ -643,6 +653,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
               <div class="row">
                 <span class='add-new-filter'><a  class="add-filter btn btn-link" href="#" style="padding-left:0px;"><i class="fa fa-plus-circle"></i> $_("Add new filter")</a></span>
               </div>
+              <span id="Filterfielderror-message" style="display:none;"></span>
               <div class="row hidden" id="filterList">
                   <div class="col-md-12">
                       <div class="col-md-5">

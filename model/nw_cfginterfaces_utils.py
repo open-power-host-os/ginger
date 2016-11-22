@@ -433,10 +433,20 @@ class CfgInterfacesHelper(object):
                                                      decode_value(a_slave))):
                     slave_found = True
                     slave_cfg_file = a_slave.rsplit('/', 1)[0]
-                    slave_name = self.trim_quotes(parser.get(
-                                                  decode_value(slave_cfg_file +
-                                                               '/DEVICE')))
-                    slaves.append(slave_name)
+                    slave_device = parser.get(decode_value(slave_cfg_file +
+                                                           '/DEVICE'))
+                    if not slave_device:
+                        slave_name_value = parser.get(decode_value(
+                                                     slave_cfg_file + '/NAME'))
+                        if slave_name_value:
+                            slave_name = self.trim_quotes(slave_name_value)
+                            slaves.append(slave_name)
+                        else:
+                            raise OperationFailed("GINNET0096E",
+                                                  {'file': slave_cfg_file})
+                    else:
+                        slave_name = self.trim_quotes(slave_device)
+                        slaves.append(slave_name)
             if not slave_found:
                 wok_log.info('No slaves found for master:' + master_device)
         finally:
@@ -1026,9 +1036,6 @@ class CfgInterfacesHelper(object):
                     self.validate_ipv4_address(ipaddrinfo[GATEWAY])
                     cfgmap[GATEWAY + postfix] = ipaddrinfo[GATEWAY]
                 index += 1
-        # Fix for issue 169
-        else:
-            raise MissingParameter('GINNET0061E')
         return cfgmap
 
     def assign_ipv6_address(self, cfgmap, params):
@@ -1055,8 +1062,6 @@ class CfgInterfacesHelper(object):
                     else:
                         cfgmap[IPV6ADDR_SECONDARIES] = \
                             ipaddrinfo[IPADDR] + '/' + ipaddrinfo[PREFIX]
-        else:
-            raise MissingParameter('GINNET0029E')
         return cfgmap
 
     def update_dnsv6_info(self, cfgmap, params):

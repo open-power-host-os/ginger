@@ -601,6 +601,10 @@ ginger.initUserManagement = function() {
         });
     };
 
+    $('#usrMgmtRefreshBtn').on('click', function() {
+        listUsers();
+    });
+
     $("#usermangementgrid").on('click','#user-remove', function(event) {
         event.preventDefault();
         var wokUserName = wok.user.getUserName();
@@ -912,7 +916,15 @@ ginger.loadAuditRulesData =  function(){
       $.each(result, function(index, rule){
         rows += "<tr><td>" + (index+1) + "</td>";
         rows += "<td>" + rule.type + "</td>";
-        rows += "<td class=\"content\" title=\""+rule.rule+"\">" + rule.rule + "</td>";
+        var ruleDetails = rule.rule;
+        var titleValue = "";
+
+        if(ruleDetails.substring(ruleDetails.indexOf("-S"),ruleDetails.indexOf("-F")).split(",").length > 10) {
+           titleValue=ruleDetails.replace(/.{80}/g,"$&"+"\n");
+        }else {
+           titleValue = ruleDetails;
+         }
+        rows += "<td class=\"content\" title=\""+titleValue+"\">" + ruleDetails + "</td>";
         rows += "<td style=\"text-align:center;\" class=\"details-control\"><span class=\"fa fa-chevron-down common-down fa-lg\"></span> </td>";
 
         if(rule.loaded=='yes'){
@@ -1327,7 +1339,7 @@ ginger.createAuditLogsTable = function(data){
       var type = (row.data()[1]!="")?row.data()[1]:'';
 
       $('.audit-log-details',$('#audit-logs-table tbody')).parent().remove();
-
+      $('.fa-chevron-up',$('#audit-logs-table tbody')).addClass('fa-chevron-down').removeClass('fa-chevron-up');
       if (row.child.isShown()) {
           // This row is already open - close it
           row.child.hide();
@@ -1344,7 +1356,12 @@ ginger.createAuditLogsTable = function(data){
 
   //Row selection
   $('#audit-logs-table tbody').on('click', 'tr', function () {
-      $(this).toggleClass("selected");
+    if($(this).hasClass("selected")){
+      $(this).removeClass("selected");
+    } else{
+      auditLogsTable.$('tr.selected').removeClass('selected');
+      $(this).addClass("selected");
+   }
   });
 
   $('#log-reset-btn').on('click', function(e) {
@@ -1789,6 +1806,35 @@ ginger.initFilterInfo = function(){
       });
 
      $('#log-filter-button-apply').on('click',function(){
+       $(".logs-loader").show();
+      $('.Audit-log-loader').show();
+       var filterarray = [];
+       var filtervaluearray = [];
+       var filterarray_len,sortarray_len;
+       var valuecheck,filtercheck;
+       $('#newRow div.row','#auditlogFilter').each(function(){
+            filterarray.push($('.selectpicker',$(this)).val());
+            filtercheck = $('.selectpicker',$(this)).val();
+            if(filtercheck == "-te" || filtercheck =="-ts"){
+               filtervaluearray.push("eventfilter");
+            } else{
+              filtervaluearray.push($('input[type=text]',$(this)).val());
+            }
+       });
+       for (var i=0; i<filtervaluearray.length; i++){
+         if(filtervaluearray[i].length == 0)
+             valuecheck = 1;
+       }
+       filterarray_len = filterarray.length;
+       var sortarray = $.unique(filterarray.sort()).sort();
+       sortarray_len = sortarray.length;
+       if(filterarray_len != sortarray_len){
+         wok.message.error(i18n['GINAUDIFILTER0027M'],"#addfielderror-message");
+         $('.Audit-log-loader').hide();
+       } else if(valuecheck == 1){
+         $('.Audit-log-loader').hide();
+         wok.message.error(i18n['GINAUDIFILTER0028M'],"#addfielderror-message");
+       } else {
        var params = '';
        var logFile= ($('#log-path-info',"#auditlogFilter").val()!='')?'-if '+ $('#log-path-info').val():'';
            params+=logFile;
@@ -1823,37 +1869,42 @@ ginger.initFilterInfo = function(){
 
         });
 
-       $('#auditlogFilter').modal('hide');
-       $(".logs-loader").show();
-
        if(params==''){
           ginger.getAuditLogs(function(result){
             reloadAuditLogs(result);
           },function(error){
-            wok.message.error(data.responseJSON.reason,"#alert-modal-audit-filter-container");
+            $('.Audit-log-loader').hide();
+            wok.message.error(error.responseJSON.reason,"#alert-modal-audit-filter-container");
           });
        }else{
          ginger.filterAuditLogs(params,function(result){
            reloadAuditLogs(result);
          },function(error){
-           wok.message.error(data.responseJSON.reason,"#alert-modal-audit-filter-container");
+           $('.Audit-log-loader').hide();
+           wok.message.error(error.responseJSON.reason,"#alert-modal-audit-filter-container");
          });
        }
 
        var reloadAuditLogs =  function(result){
+         $('#auditlogFilter').modal('hide');
          wok.message.success(i18n['GINAUDIT0016M'],"#alert-modal-audit-logs-container");
          $("#audit-logs-table tbody").empty();
          $("#audit-logs-table").DataTable().destroy();
          ginger.createAuditLogsTable(result);
        }
+      }
      });
   });
 
   $('#auditlogFilter').on('hide.bs.modal', function(event) {
+       $(".logs-loader").hide();
+       $('.Audit-log-loader').hide();
        $('#log-path-info',$(this)).val('');
        $('#newRow',$(this)).empty();
        $('#interpret',$(this)).attr('checked',false);
        $('#log-filter-button-apply').off();
+       $("#addfielderror-message").empty();
+       $("#alert-modal-audit-filter-container").empty();
    });
 };
 
@@ -1930,6 +1981,20 @@ ginger.initSummaryInfo = function(){
        e.preventDefault();
        e.stopImmediatePropagation();
        $('.report-loader').show();
+       var reportarray = [];
+       var reportarray_len,repsortarray_len;
+       var filtercheck;
+       $('#newRow div.row','#auditlogReport').each(function(){
+            reportarray.push($('.selectpicker',$(this)).val());
+       });
+       reportarray_len = reportarray.length;
+       var repsortarray = $.unique(reportarray.sort()).sort();
+       repsortarray_len = repsortarray.length;
+       if(reportarray_len != repsortarray_len){
+         $('.report-loader').hide();
+         wok.message.error(i18n['GINAUDIFILTER0029M'],"#Filterfielderror-message");
+         $('#summaryreport').empty();
+       } else {
       var params = '';
       var logFile= ($('#log-path-info','#auditlogReport').val()!='')?'-if '+ $('#log-path-info','#auditlogReport').val():'';
           params+=logFile;
@@ -1955,13 +2020,17 @@ ginger.initSummaryInfo = function(){
         ginger.getAuditSummaryReport(function(result){
            populateReport(result);
         },function(error){
+          $('.report-loader').hide();
           wok.message.error(error.responseJSON.reason,"#alert-modal-audit-report-container");
+          $('#summaryreport').empty();
         })
       }else{
         ginger.getAuditReport(params,function(result){
            populateReport(result);
         },function(error){
+          $('.report-loader').hide();
           wok.message.error(error.responseJSON.reason,"#alert-modal-audit-report-container");
+          $('#summaryreport').empty();
         });
       }
 
@@ -1992,6 +2061,7 @@ ginger.initSummaryInfo = function(){
           $("#summaryReportPathInfo").html(i18n['GINAUDIT0017M']).removeClass('hidden');
           $('.report-loader').hide();
         }
+      }
     });
 
     $("#report-download-button").on("click",function(e){
@@ -2010,6 +2080,8 @@ ginger.initSummaryInfo = function(){
       $('#summaryreport').empty();
       $('#summaryReportPathInfo').empty().hide();
       $("#report-details").addClass("hidden");
+     $("#Filterfielderror-message").empty();
+     $("#alert-modal-audit-report-container").empty();
     });
 };
 ginger.initGraphDetails = function(columnInfo){

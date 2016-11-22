@@ -48,7 +48,6 @@ messages = {
     "GINNET0026E": _("Missing ipv4 initialization key."),
     "GINNET0027E": _("Missing ipv6 initialization key."),
     "GINNET0028E": _("Invalid ipv6 address '%(ip)s', '%(error)s'."),
-    "GINNET0029E": _("Missing ipv6 address information."),
     "GINNET0030E": _("Exception getting route information: %(err)s"),
     "GINNET0032E": _("Bond info is missing."),
     "GINNET0033E": _("Allowed values for BONDING_MASTER are 'yes' or 'no'"),
@@ -113,6 +112,7 @@ messages = {
                      "refresh and try again. "),
     "GINNET0095E": _("Activation of vlan interface '%(name)s' failed. "
                      "Try disabling the DHCP option in IPv4 settings tab."),
+    "GINNET0096E": _("There is no DEVICE or NAME values in the slave interface configuration file ('%(file)s')."),
 
     "GINUSER0001E": _("Specify name, password, group and profile for the new "
                       "user."),
@@ -140,8 +140,13 @@ messages = {
     "GINUSER0023E": _("There was a problem while fetching user profile, see log for details"),
     "GINUSER0024E": _("Failed to change password for user '%(user)s', error: '%(err)s'."),
     "GINUSER0025E": _("There was a problem while creating user '%(user)s', error: group id %(gid)s is not of integer type."),
-    "GINUSER0026E": _("There was a problem while creating user '%(user)s', error: no_login id %(no_login)s is not of boolean type."),
+    "GINUSER0026E": _("There was a problem while creating user '%(user)s', error: no_login %(no_login)s is not of boolean type."),
     "GINUSER0027E": _("Failed to remove user '%(user)s' from group '%(group)s'. Error: group name is an empty string."),
+    "GINUSER0028E": _("There was a problem while creating group '%(group)s'. Reason: %(err)s."),
+    "GINUSER0029E": _("There was a problem while deleting group '%(group)s'. Reason: %(err)s."),
+    "GINUSER0030E": _("There was a problem while creating user '%(user)s'. Reason: %(err)s."),
+    "GINUSER0031E": _("There was a problem while deleting user '%(user)s'. Reason: %(err)s."),
+    "GINUSER0032E": _("Failed to remove user '%(user)s' from group '%(group)s'. Error: user name is an empty string."),
 
     "GINFW0001E": _("Cannot update system firmware while running VMs."),
     "GINFW0002E": _("Firmware image unpack failed: rc = %(rc)s. "
@@ -390,7 +395,7 @@ messages = {
     "GINAUD0016E": _("Error occurred in fetching the logs."),
     "GINAUD0017E": _("Error occurred in getting the reports."),
     "GINAUD0018E": _("Loading the rule '%(name)s' failed."),
-    "GINAUD0019E": _("Error occurred in loading predefined rules."),
+    "GINAUD0019E": _("Error occurred in loading predefined rules: '%(Error)s'"),
     "GINAUD0020E": _("The rule '%(name)s' is already persisted."),
     "GINAUD0021E": _("The predefined rules files doesn't exist."),
     "GINAUD0022E": _("Execution on auditctl command failed with error '%(error)s'"),
@@ -402,6 +407,7 @@ messages = {
     "GINAUD0028E": _("Error occurred in graph creation: '%(error)s"),
     "GINAUD0029E": _("Invalid parameters to create a report graph."),
     "GINAUD0030E": _("Failed to create the graph: Package 'Graphviz' is not installed."),
+    "GINAUD0031E": _("At least one permission is required for File System Rule."),
     "GINSE00001E": _("Missing Input Parameters"),
     "GINSE00002E": _("Server with name %(name)s is already added"),
     "GINSE00003E": _("Error while getting the status of server with name %(name)s and IP address or Host Name %(ipaddr)s. Please check the server details and retry the operation."),
