@@ -456,7 +456,11 @@ ginger.refreshSensors = function() {
 
 ginger.initSensorsMonitor = function() {
     ginger.listSensors();
-    setInterval(ginger.refreshSensors, 5000);
+    ginger.refreshSensorsInterval = setInterval(ginger.refreshSensors, 5000);
+
+    $('#administration-root-container').on('remove', function() {
+        ginger.refreshSensorsInterval && clearInterval(ginger.refreshSensorsInterval);
+    });
 
     $('.update-sensors').on('click', function() {
       ginger.lastActiveSensors.length = 0;
@@ -918,9 +922,10 @@ ginger.loadAuditRulesData =  function(){
         rows += "<td>" + rule.type + "</td>";
         var ruleDetails = rule.rule;
         var titleValue = "";
+        var syscallStartIndex = ruleDetails.indexOf("-S");
 
-        if(ruleDetails.substring(ruleDetails.indexOf("-S"),ruleDetails.indexOf("-F")).split(",").length > 10) {
-           titleValue=ruleDetails.replace(/.{80}/g,"$&"+"\n");
+        if(ruleDetails.substring(syscallStartIndex,ruleDetails.indexOf("-F",syscallStartIndex)).split(",").length > 10) {
+           titleValue=ruleDetails.replace(/.{70}/g,"$&"+"\n");
         }else {
            titleValue = ruleDetails;
          }
@@ -1237,9 +1242,15 @@ ginger.ruleDetailsPopulation = function(data , row){
           break;
        case "systemcall":
           text = i18n['GINAUDIT0004M'];
+          if(value.length > 10) {
+             value=value.toString().replace(/.{70}/g,"$&"+"\n");
+          }
           break;
        case "field":
           text = i18n['GINAUDIT0005M'];
+          if(value.length > 10) {
+             value=value.toString().replace(/.{70}/g,"$&"+"\n");
+          }
           break;
        case "key":
          text = i18n['GINAUDIT0006M'];

@@ -530,42 +530,61 @@ def parse_vgdisplay_output(vgout, below_threshold_version):
     """
     output = {}
     p = vgout.splitlines()
+
+    if len(p) < 2:
+        return output
+
+    vg_info = p[1].split(':')
+
+    output['VG Name'] = vg_info[0]
+    output['System ID'] = vg_info[1]
+    output['Format'] = vg_info[2]
+    output['Metadata Areas'] = vg_info[3]
+    output['Metadata Sequence No'] = vg_info[4]
+
+    if below_threshold_version:
+        output['Permission'] = 'N/A'
+        output['VG Status'] = 'N/A'
+        output['Max LV'] = vg_info[5]
+        output['Cur LV'] = int(vg_info[6])
+        output['Max PV'] = vg_info[7]
+        output['Cur PV'] = vg_info[8]
+        output['VG Size'] = float(vg_info[9][:-1])
+        output['PE Size'] = float(vg_info[10][:-1])
+        output['Free PE'] = vg_info[14]
+        output['VG UUID'] = vg_info[16]
+    else:
+        output['Permission'] = vg_info[5]
+        output['VG Status'] = vg_info[6]
+        output['Max LV'] = vg_info[7]
+        output['Cur LV'] = int(vg_info[8])
+        output['Max PV'] = vg_info[9]
+        output['Cur PV'] = vg_info[10]
+        output['VG Size'] = float(vg_info[11][:-1])
+        output['PE Size'] = float(vg_info[12][:-1])
+        output['Free PE'] = vg_info[16]
+        output['VG UUID'] = vg_info[18]
+
     for i in p[1:]:
-        output['VG Name'] = i.split(':')[0]
-        output['System ID'] = i.split(':')[1]
-        output['Format'] = i.split(':')[2]
-        output['Metadata Areas'] = i.split(':')[3]
-        output['Metadata Sequence No'] = i.split(':')[4]
         if below_threshold_version:
-            output['Permission'] = 'N/A'
-            output['VG Status'] = 'N/A'
-            output['Max LV'] = i.split(':')[5]
-            output['Cur LV'] = int(i.split(':')[6])
-            output['Max PV'] = i.split(':')[7]
-            output['Cur PV'] = i.split(':')[8]
-            output['VG Size'] = float(i.split(':')[9][:-1])
-            output['PE Size'] = float(i.split(':')[10][:-1])
-            output['Total PE'] = i.split(':')[11]
-            output['Alloc PE'] = i.split(':')[12]
-            output['Alloc PE Size'] = float(i.split(':')[13][:-1])
-            output['Free PE'] = i.split(':')[14]
-            output['Free PE Size'] = float(i.split(':')[15][:-1])
-            output['VG UUID'] = i.split(':')[16]
+            output['Free PE Size'] = \
+                output.get('Free PE Size', 0) + float(i.split(':')[15][:-1])
+            output['Alloc PE'] = \
+                output.get('Alloc PE', 0) + int(i.split(':')[12])
+            output['Total PE'] = \
+                output.get('Total PE', 0) + int(i.split(':')[11])
+            output['Alloc PE Size'] = \
+                output.get('Alloc PE Size', 0) + float(i.split(':')[13][:-1])
+
         else:
-            output['Permission'] = i.split(':')[5]
-            output['VG Status'] = i.split(':')[6]
-            output['Max LV'] = i.split(':')[7]
-            output['Cur LV'] = int(i.split(':')[8])
-            output['Max PV'] = i.split(':')[9]
-            output['Cur PV'] = i.split(':')[10]
-            output['VG Size'] = float(i.split(':')[11][:-1])
-            output['PE Size'] = float(i.split(':')[12][:-1])
-            output['Total PE'] = i.split(':')[13]
-            output['Alloc PE'] = i.split(':')[14]
-            output['Alloc PE Size'] = float(i.split(':')[15][:-1])
-            output['Free PE'] = i.split(':')[16]
-            output['Free PE Size'] = float(i.split(':')[17][:-1])
-            output['VG UUID'] = i.split(':')[18]
+            output['Free PE Size'] = \
+                output.get('Free PE Size', 0) + float(i.split(':')[17][:-1])
+            output['Alloc PE'] = \
+                output.get('Alloc PE', 0) + int(i.split(':')[14])
+            output['Total PE'] = \
+                output.get('Total PE', 0) + int(i.split(':')[13])
+            output['Alloc PE Size'] = \
+                output.get('Alloc PE Size', 0) + float(i.split(':')[15][:-1])
 
         if 'PV Names' in output:
             if below_threshold_version:
@@ -1171,12 +1190,14 @@ def get_discovered_iscsi_qns():
         if not os.path.exists(iscsiadm_db_path):
             iscsiadm_db_path = '/var/lib/iscsi/nodes'
 
-        discovered_iqns_list = os.listdir(iscsiadm_db_path)
+        discovered_iqns_list = os.listdir(iscsiadm_db_path) \
+            if os.path.isdir(iscsiadm_db_path) else []
 
         for discovered_iqn in discovered_iqns_list:
             discovered_iqns[discovered_iqn] = False
 
-        current_sessions = os.listdir('/sys/class/iscsi_session')
+        current_sessions = os.listdir('/sys/class/iscsi_session') if \
+            os.path.isdir('/sys/class/iscsi_session') else []
 
         # Iterate over all sessions once for efficiency instead of
         # calling is_target_logged_in function below for every iqn
@@ -1192,7 +1213,7 @@ def get_discovered_iscsi_qns():
                              'targets': get_iscsi_iqn_auth_info(iqn)})
 
     except Exception as e:
-        raise OperationFailed("GINISCSI005E", {'err': e.message})
+        raise OperationFailed("GINISCSI005E", {'err': e.__str__()})
 
     return iqn_list
 

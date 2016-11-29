@@ -236,9 +236,12 @@ ginger.initOvsClickHandler = function() {
 
 ginger.addOvsBridgeModal = function() {
     $('#addButton').prop('disabled', true);
-    $('input#bridge[name="name"]').on('keyup', function() {
+    $('input#bridge[name="name"]').on('input propertychange', function() {
+       var ovsNamePattern  = /^[a-zA-Z0-9-_.]+$/;
         if ($(this).val().length != 0) {
-            $('#addButton').prop('disabled', false);
+          var isValidOvsName = ovsNamePattern.test($(this).val());
+          $('#addButton').prop('disabled', !isValidOvsName);
+          $(this).toggleClass("invalid-field", !isValidOvsName);
         } else {
             $('#addButton').prop('disabled', true);
         }
@@ -584,11 +587,15 @@ ginger.renderNetworkConfig = function() {
                             ginger.enableInterface(ifDevice, "up", function(result) {
                                 var message = i18n['GINNET0081M'].replace('%1', '<strong>' + ifDevice + '</strong>');
                                 wok.message.success(message, '#message-network-configuration-container-area');
-                                refreshNetworkConfigurationDatatable();
+                                if(key==rows_indexes.length-1) {
+                                    refreshNetworkConfigurationDatatable();
+                                }
                             }, function(err) {
-                                $('#network-configuration-content-area > .wok-mask').addClass('hidden');
                                 var message = i18n['GINNET0082M'].replace('%1', '<strong>' + ifDevice + '</strong>');
                                 wok.message.error(message + " " + err.responseJSON.reason, '#message-network-configuration-container-area', true);
+                                if(key==rows_indexes.length-1) {
+                                    refreshNetworkConfigurationDatatable();
+                                }
                             });
                         }
                     });
@@ -635,11 +642,15 @@ ginger.renderNetworkConfig = function() {
                             ginger.enableInterface(ifDevice, "down", function(result) {
                                 var message = i18n['GINNET0079M'].replace('%1', '<strong>' + ifDevice + '</strong>');
                                 wok.message.success(message, '#message-network-configuration-container-area');
-                                refreshNetworkConfigurationDatatable();
+                                if(key==rows_indexes.length-1) {
+                                    refreshNetworkConfigurationDatatable();
+                                }
                             }, function(err) {
-                                $('#network-configuration-content-area > .wok-mask').addClass('hidden');
                                 var message = i18n['GINNET0080M'].replace('%1', '<strong>' + ifDevice + '</strong>');
                                 wok.message.error(message + " " + err.responseJSON.reason, '#message-network-configuration-container-area', true);
+                                if(key==rows_indexes.length-1) {
+                                    refreshNetworkConfigurationDatatable();
+                                }
                             });
                         }
                     });
@@ -705,15 +716,20 @@ ginger.renderNetworkConfig = function() {
                         if (ifStatus === 'up' || ifStatus === "unknown") {
                             $('#network-configuration-content-area > .wok-mask').removeClass('hidden');
                             // First Bring down the interface
-                            ginger.enableInterface(value.device, "down", function(result) {
+                            ginger.enableInterface(ifDevice, "down", function(result) {
                                 // Second Bring the interface up back again
-                                ginger.enableInterface(value.device, "up", function(result) {
+                                ginger.enableInterface(ifDevice, "up", function(result) {
                                     var message = i18n['GINNET0083M'].replace('%1', '<strong>' + ifDevice + '</strong>');
                                     wok.message.success(message, '#message-network-configuration-container-area', true);
+                                    if(key==rows_indexes.length-1) {
+                                        refreshNetworkConfigurationDatatable();
+                                    }
                                 }, function(err) {
-                                    $('#network-configuration-content-area > .wok-mask').addClass('hidden');
                                     var message = i18n['GINNET0084M'].replace('%1', '<strong>' + ifDevice + '</strong>');
                                     wok.message.error(message + " " + err.responseJSON.reason, '#message-network-configuration-container-area', true);
+                                    if(key==rows_indexes.length-1) {
+                                        refreshNetworkConfigurationDatatable();
+                                    }
                                 });
                             }, function(err) {
                                 $('#network-configuration-content-area > .wok-mask').addClass('hidden');
