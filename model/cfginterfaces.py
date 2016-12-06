@@ -28,9 +28,10 @@ from wok.utils import wok_log
 
 from wok.plugins.gingerbase import netinfo
 
-from interfaces import InterfaceModel
 from nw_interfaces_utils import cfgInterfacesHelper
+from nw_interfaces_utils import InterfacesHelper
 
+from nw_cfginterfaces_utils import OPTIONS
 from nw_cfginterfaces_utils import network_configpath
 from nw_cfginterfaces_utils import ifcfg_filename_format
 from nw_cfginterfaces_utils import route_format
@@ -88,15 +89,11 @@ from nw_cfginterfaces_utils import METRIC
 from nw_cfginterfaces_utils import VIA
 from nw_cfginterfaces_utils import CONST_YES
 from nw_cfginterfaces_utils import CONST_NO
-from nw_cfginterfaces_utils import OPTIONS
 
 
 class CfginterfacesModel(object):
     def get_list(self):
         nics = cfgInterfacesHelper.get_interface_list()
-        # To handle issue https://github.com/kimchi-project/ginger/issues/99
-        # cfginterface resource model deals with interface which has config
-        # files.remove interface from interface list if ifcfg file not exist.
         nics_with_ifcfgfile = []
         for iface in nics:
             filename = ifcfg_filename_format % iface
@@ -106,9 +103,7 @@ class CfginterfacesModel(object):
                              ' interface :' + iface)
             else:
                 nics_with_ifcfgfile.append(iface)
-        # Ensure comparison are done in same type.
         return sorted(map(decode_value, nics_with_ifcfgfile))
-        # return get_interface_list()
 
     def create(self, params):
         if params[BASIC_INFO][TYPE] == IFACE_BOND \
@@ -121,7 +116,6 @@ class CfginterfacesModel(object):
             params[BASIC_INFO][NAME] = name
             cfg_map = CfginterfaceModel().populate_ifcfg_atributes(params,
                                                                    cfg_map)
-            # Check for any empty key value in cfg_map
             for key in cfg_map:
                 if len(cfg_map[key]) == 0:
                     raise InvalidParameter("GINNET0073E", {'key': key})
@@ -158,7 +152,6 @@ class CfginterfacesModel(object):
         if len(slave_list) != 0:
             active_slave_found = True
             for slave in slave_list:
-                # Fix ginger issue #144
                 if netinfo.operstate(slave) == STATE_DOWN:
                     active_slave_found = False
                 else:
@@ -181,7 +174,6 @@ class CfginterfaceModel(object):
         self._rollback_timer = None
 
     def lookup(self, name):
-        # self.validate_interface(name)
         info = self.get_cfginterface_info(name)
         return info
 
@@ -201,14 +193,13 @@ class CfginterfaceModel(object):
         type = netinfo.get_interface_type(name)
         allowed_active_types = [IFACE_BOND, IFACE_VLAN]
         if type in allowed_active_types:
-            InterfaceModel().deactivate(name)
+            InterfacesHelper().deactivate_iface(name)
 
     def get_cfginterface_info(self, iface):
         ethinfo = {}
         cfgmap = cfgInterfacesHelper.read_ifcfg_file(iface)
         if cfgmap:
             ethinfo.update(self.get_interface_info(cfgmap))
-        # When cfgmap is empty or ifcfg file doesn't exist
         else:
             raise OperationFailed("GINNET0080E", {'name': iface})
         return ethinfo
@@ -238,7 +229,6 @@ class CfginterfaceModel(object):
             interface_type = cfgmap[TYPE]
         elif VLAN in cfgmap and CONST_YES == cfgmap[VLAN]:
             interface_type = IFACE_VLAN
-            # Fix ginger issue #131
         cfgInterfacesHelper.get_architecture_specific_info(info, cfgmap)
         if interface_type is not None:
             info[BASIC_INFO][TYPE] = interface_type
@@ -274,7 +264,6 @@ class CfginterfaceModel(object):
                 routes = self.get_routes_map(cfgmap[NAME], 4)
             if len(routes) > 0:
                 info[IPV4_ID][ROUTES] = routes
-            # Fix ginger issue #110
             if len(info[IPV4_ID]) > 0:
                 info[IPV4_ID][IPV4INIT] = CONST_YES
             else:
@@ -476,7 +465,6 @@ class CfginterfaceModel(object):
                     raise OperationFailed("GINNET0030E", {'err': e.message})
         route_list = []
         i = 0
-        # construct list of dictionaries from the given key=value list.
         while True:
             route_map_dict = {}
             if ADDRESS + str(i) in cfgroutes_info \
