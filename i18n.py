@@ -201,7 +201,7 @@ messages = {
     "GINFS00005E": _("error in filesystem info fetch util"),
     "GINFS00006E": _("Error in executing 'df -hT' command"),
     "GINFS00007E": _("Failed to mount the filesystem, error: %(err)s"),
-    "GINFS00008E": _("error in unmount util"),
+    "GINFS00008E": _("error in unmount util %(err)s"),
     "GINFS00009E": _("Require block dev to mount a filesystem"),
     "GINFS00010E": _("Require mount point to mount a filesystem"),
 
@@ -237,6 +237,7 @@ messages = {
     "GINSP00020E": _("File %(file)s already in use."),
     "GINSP00021E": _("Unable to change the partition type. Error: %(err)s"),
     "GINSP00022E": _("File path cannot be an existing directory"),
+    "GINSP00023E": _("Unable to remove swap signature. Error: %(err)s"),
 
     "GINPART00001E": _("Fetching list of partitions failed. Error: %(err)s"),
     "GINPART00002E": _("Create partition failed. Error: %(err)s"),
@@ -525,5 +526,12 @@ messages = {
     "GINVG0003L": _("Extend host volume group '%(ident)s'"),
     "GINVG0004L": _("Reduce host volume group '%(ident)s'"),
     "GINAUDISP0001L": _("Updated the auditdisp plugin conf file '%(ident)s'."),
-    "GINAUDISP0002L": _("Updated the auditdisp conf file '%(ident)s'.")
+    "GINAUDISP0002L": _("Updated the auditdisp conf file '%(ident)s'."),
+
+    # These messages (ending with M) are for globalization
+    "GINAUD0001M": _("Sets the maximum amount of existing Audit buffers in the kernel"),
+    "GINAUD0002M": _("Enables(1) and disables(0) the Audit system or locks(2) its configuration"),
+    "GINAUD0003M": _("Sets the action that is performed when a critical error is detected"),
+    "GINAUD0004M": _("Sets the rate of generated messages per second"),
+    "GINAUD0005M": _("Delete all rules")
 }

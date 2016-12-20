@@ -95,8 +95,12 @@ def _create_file(size, file_loc):
     :param size: size of the file
     :return:
     """
+    size = size.rstrip('M')
+    # size is given in Mb,
+    # block size is fixed as 1M
+    # for 1000 Mb size bs=1M and count 1000
     out, err, rc = run_command(
-        ["dd", "if=/dev/zero", "of=" + file_loc, "bs=" + size, "count=1"])
+        ["dd", "if=/dev/zero", "of=" + file_loc, "bs=1M", "count=" + size])
 
     if rc != 0:
         if "Text file busy" in err:
@@ -255,10 +259,12 @@ def create_disk_part(dev, size):
                               stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     p1_out.stdout.close()
     out, err = p2_out.communicate()
-    if p2_out.returncode != 0:
+    if p2_out.returncode == 1 and "WARNING" in out:
+        run_command(["partprobe", dev, "-s"])
+    else:
         raise OperationFailed("GINPART00011E", err)
     part_path = get_dev_part(dev)
-    return part_path.split('/')[2]
+    return part_path.split('/')[-1]
 
 
 def _form_part_str(size):
@@ -1605,3 +1611,14 @@ def write_to_conf(key, value, conf):
             conf_file.close()
     except Exception:
         raise OperationFailed("GINAUDISP0003E", {"name": conf})
+
+
+def remove_swap_sig(device):
+    """
+    Remove the swap signature from the device
+    :param device: path of the device
+    """
+    cmd = ["wipefs", "-a", device]
+    out, err, rc = run_command(cmd)
+    if rc != 0:
+        raise OperationFailed("GINSP00023E", {"err": err})

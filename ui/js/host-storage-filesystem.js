@@ -109,7 +109,7 @@ ginger.initFileSystemMount = function(){
      }
 
      if(nfsMountVersion.val()=='2' || nfsMountVersion.val()=='3'){
-       mountOptions+='netserv='+nfsMountVersion.val();
+       mountOptions+='nfsvers='+nfsMountVersion.val();
      }else{
            if(nfsMountVersion.val()!=''){
            mountOptions+=nfsMountVersion.find('option:selected').text();
@@ -129,7 +129,7 @@ ginger.initFileSystemMount = function(){
       mountOptions+=','+mountType;
      }
 
-     if($('input[type=checkbox]:checked').length!==0){
+     if($('#nfs-mount-netdev:checked').length!==0){
           mountOptions+=','+'_netdev';
      }
         if(mountOptions!=""){
