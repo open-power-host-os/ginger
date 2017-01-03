@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corp, 2015-2016
+ * Copyright IBM Corp, 2015-2017
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -225,6 +225,7 @@ ginger.initOvsClickHandler = function() {
                 var bridgeItem = $('div.wok-datagrid-row[data-name="' + ginger.selectedBridge + '"');
                 wok.message.success(i18n['GINNET0050M'].replace("%1", '<strong>' + ginger.selectedBridge + '</strong>'), '#ovs-alert-container');
                 bridgeItem.remove();
+                refreshOvsBridges();
                 $('body').animate({ scrollTop: 0 }, 1000);
             }, function(err) {
                 wok.message.error(err.responseJSON.reason, '#ovs-alert-container');
@@ -334,8 +335,8 @@ ginger.renderNetworkConfig = function() {
                 ginger.nwConfiguration.disableDown();
                 ginger.nwConfiguration.disableRestart();
             }
-            if ((networkModule !== 'mlx5_core' && networkModule === 'mlx5-core') || networkNicType === 'virtual') {
-                // 3 - Hide and disable SR-IOV
+            if ((networkModule === 'mlx5_core' || networkModule === 'mlx5-core')
+                && networkNicType === 'physical') {
                 ginger.nwConfiguration.showSrIov();
             } else {
                 ginger.nwConfiguration.hideSrIov();
