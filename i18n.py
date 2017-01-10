@@ -1,7 +1,7 @@
 #
-# Projact Ginger
+# Project Ginger
 #
-# Copyright IBM Corp, 2014-2016
+# Copyright IBM Corp, 2014-2017
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -113,6 +113,7 @@ messages = {
     "GINNET0095E": _("Activation of vlan interface '%(name)s' failed. "
                      "Try disabling the DHCP option in IPv4 settings tab."),
     "GINNET0096E": _("There is no DEVICE or NAME values in the slave interface configuration file ('%(file)s')."),
+    "GINNET0097E": _("Monitoring interval must be at least %(miimon)s"),
 
     "GINUSER0001E": _("Specify name, password, group and profile for the new "
                       "user."),
@@ -174,6 +175,7 @@ messages = {
     "GINHBK0010E": _('Unable to create backup, file %(file)s changed as we read it'),
     "GINHBK0011E": _('Archive creation task failed. "%(err)s".'),
     "GINHBK0012E": _('Unable to include default backup dir (%(dir)s) to a backup file'),
+    "GINHBK0013E": _('Archive restore task failed. "%(err)s".'),
 
     "GINADAP0001E": _("SAN adapter '%(adapter)s' does not exist in the system."
                       ),

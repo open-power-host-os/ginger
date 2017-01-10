@@ -1,7 +1,7 @@
 #
 # Project Ginger
 #
-# Copyright IBM Corp, 2016
+# Copyright IBM Corp, 2016-2017
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -69,7 +69,7 @@ class InterfaceModel(object):
                 info = netinfo.get_interface_info(name)
             elif cfgInterfacesHelper.is_cfgfileexist(name):
                 type = cfgInterfacesHelper.get_type(name).lower()
-                if type not in [IFACE_BOND, IFACE_VLAN]:
+                if type not in IFACE_BOND + [IFACE_VLAN]:
                     raise ValueError
                 device = cfgInterfacesHelper.get_device(name)
                 info = {'device': device,

@@ -857,7 +857,7 @@ ginger.renderNetworkConfig = function() {
                     ginger.retrieveCfgInterface(ginger.selectedInterface, function(result) {
                         if ((ifType).toLowerCase() == "vlan") {
                             wok.window.open('plugins/ginger/host-network-vlan.html');
-                        } else if ((ifType).toLowerCase() == "bonding") {
+                        } else if (((ifType).toLowerCase() == "bond") || ((ifType).toLowerCase() == "bonding")) {
                             wok.window.open('plugins/ginger/host-network-bond.html');
                         } else if (((ifType).toLowerCase() == "ethernet") || ((ifType).toLowerCase() == "nic")) {
                             // condition nic should go away if #104 to be correct and resolved
@@ -1162,6 +1162,12 @@ ginger.loadGlobalNetworkConfig = function() {
             }
         });
     }
+    // disable nw-settings for Ubuntu
+    ginger.getHostDetails(function(result) {
+        if (result["os_distro"] == "Ubuntu") {
+            $(".nw-configuration-action > .btn").hide();
+        }
+    });
     tableClickHandler();
 
     var tableInputValidation = function() {

@@ -103,7 +103,7 @@ server.
 
 ### Resource: Archive (configuration backup)
 
-**URI:** /plugins/ginger/backup/archive/*:identity*
+**URI:** /plugins/ginger/backup/archives/*:identity*
 
 **Methods:**
 
@@ -120,6 +120,9 @@ server.
 
 * **DELETE**: Delete the configuration backup.
 
+**Actions (POST):**
+
+* restore: Restore the configuration backup.
 
 ### Resource: Configuration
 
