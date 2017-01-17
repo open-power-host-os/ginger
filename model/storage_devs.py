@@ -1,7 +1,7 @@
 #
 # Project Ginger
 #
-# Copyright IBM Corp, 2016
+# Copyright IBM Corp, 2016-2017
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -85,6 +85,7 @@ def get_final_list():
                 final_dict['wwpn'] = fc_blk_dict[blk].get('wwpn', '')
                 final_dict['fcp_lun'] = fc_blk_dict[blk].get('fcp_lun', '')
                 final_dict['vport'] = fc_blk_dict[blk].get('vport', '')
+                final_dict['status'] = ''
 
             if 'id' in final_dict:
                 if final_dict['id'] in ll_id_dict:
