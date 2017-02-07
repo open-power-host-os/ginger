@@ -141,6 +141,7 @@ ginger.initFileSystemsGridData = function() {
         result[i]['size'] = Number(result[i]['size'].toFixed(2));
     }
     ginger.loadBootgridData(opts['gridId'], result);
+    $('#' + opts['gridId']).bootgrid('deselect');
     ginger.showBootgridData(opts);
     ginger.hideBootgridLoading(opts);
   },function(err){
@@ -627,6 +628,7 @@ ginger.initStorageDevicesGridData = function() {
   opts['gridId'] = "stgDevGrid";
   ginger.getStgdevs(function(result) {
     ginger.loadBootgridData(opts['gridId'], result);
+    $('#' + opts['gridId']).bootgrid('deselect');
     ginger.hideBootgridLoading(opts);
   },function(err){
     wok.message.error(err.responseJSON.reason, '#storage-devices-alert-container');
@@ -662,13 +664,21 @@ ginger.changeActionButtonsState = function() {
     $('#action-dropdown-button-file-systems-actions').prop('title', '');
 
     var dasd = false;
+    var iscsi = false;
+    var otherdevices = false;
     $.each(ginger.getSelectedRowsData(opts), function(i, row) {
-      if (row['type'] === "dasd") {
-        dasd = true;
+      switch (row['type']) {
+        case "dasd": dasd = true;
+          break;
+        case "iscsi" : iscsi = true;
+          break;
+        default : otherdevices = true;
+          break;
       }
     });
 
     ginger.changeButtonStatus(["sd-format-button"], dasd);
+    ginger.changeButtonStatus(["sd-remove-button"], !iscsi || dasd || otherdevices);
   }
 };
 

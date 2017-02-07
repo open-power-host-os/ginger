@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corp, 2016
+ * Copyright IBM Corp, 2016-2017
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -121,6 +121,7 @@ ginger.configurePageNavigation = function(noOfPages,pageContentMapping,container
 
     if(goToPage===0){
       $("#vg-create-button-prev").addClass('disabled');
+      $('#vg-create-button-done').addClass('hidden');
     }
      $("#vg-create-button-next").removeClass('disabled');
      $('.pager').data("curr",goToPage);
@@ -326,6 +327,7 @@ ginger.createPV = function(selectedRows){
               $("#selected-pv-table").DataTable().row.add([row[0]]).draw();
               if(index==selectedRows.length-1){
                 $('.selectedPv-loader').hide();
+                $('#vg-create-button-apply').removeClass('hidden');
               }
            },function(error){
              if(index==selectedRows.length-1){
@@ -335,6 +337,8 @@ ginger.createPV = function(selectedRows){
              taskAccepted;
            },onTaskAccepted);
         });
+      },function(){
+        $('#vg-create-button-prev').trigger('click');
       });
   }else{
     var content = ((type=='part')?i18n['GINVG0007M']:i18n['GINVG0008M']);

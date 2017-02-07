@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corp, 2016
+ * Copyright IBM Corp, 2016-2017
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -152,7 +152,7 @@ ginger.generateSystemServiceElem = function(value){
         } else {
             return;
         }
-        var servicename = name.split(".service").join("").replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+        var servicename = name.split(".service").join("").replace(/[`~!@#$%^&*()_|+=?;:'",.<>\{\}\[\]\\\/]/gi, '');
         var id = 'service-'+servicename;
         var collapse_target = id+'-details';
         var loaded = value.load;
