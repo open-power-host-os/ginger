@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corp, 2016
+ * Copyright IBM Corp, 2016-2017
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,10 +74,11 @@ ginger.loadRuleValues = function() {
         });
         EditRule = $('#AuditEdit');
         Ruletype = $('#rule-type', EditRule);
+        TRuletype = $('#t-rule-type', EditRule);
         Permission = $('#permissionID', EditRule);
         File = $('#filetowatch', EditRule);
         Key = $('#keyedit', EditRule);
-        Ruletype.val(Rtype);
+        TRuletype.val(i18n['GINAUDIT0080M']);
         var per = (JSON.parse(selectedRows)['permissions']);
         for (var i = 0; i < per.length; i++) {
             if (per[i] == "r") {
@@ -165,6 +166,7 @@ ginger.loadControlRuleValues = function() {
         }
         EditRule = $('#AuditControl');
         Ruletype = $('#rule-type', EditRule);
+        TRuletype = $('#t-rule-type', EditRule);
         option = $('#optionid', EditRule);
         var picker = $('.selectpicker');
         if (controloption == "-b") {
@@ -184,7 +186,7 @@ ginger.loadControlRuleValues = function() {
             $('.selectpicker').selectpicker('refresh');
             $('#rvaluedata').val(controlvalue.trim());
         }
-        Ruletype.val(Rtype);
+        TRuletype.val(i18n['GINAUDIT0079M']);
         $('.selectpicker').selectpicker('refresh');
         return ruleName;
     }
@@ -310,6 +312,7 @@ ginger.loadSystemcallRuleValues = function() {
             }
         }
         $('#rule-type').val("System Call Rule");
+        $('#t-rule-type').val(i18n['GINAUDIT0078M']);
         $('#sysaction').selectpicker("val", rulearray['action'].trim());
         $('#sysfilter').selectpicker("val", rulearray['filter'].trim());
         var selectrule = [];

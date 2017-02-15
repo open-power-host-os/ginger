@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corp, 2015-2016
+ * Copyright IBM Corp, 2015-2017
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -343,7 +343,7 @@ ginger.createEditableBootgrid = function(gridInstance, opts, rowKey) {
 
           if (!isValid) {
             saveButton.css('pointer-events', 'none');
-            return 'invalid field';
+            return i18n['GINBG00006M'];
           }
         }
       }).on('shown', function(e, editable) {

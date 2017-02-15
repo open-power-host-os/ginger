@@ -939,7 +939,14 @@ ginger.loadAuditRulesData =  function(){
       var rows = "";
       $.each(result, function(index, rule){
         rows += "<tr><td>" + (index+1) + "</td>";
-        rows += "<td>" + rule.type + "</td>";
+        if(rule.type=="System Call Rule"){
+            type = i18n['GINAUDIT0078M'];
+        }else if(rule.type=="Control Rule"){
+            type = i18n['GINAUDIT0079M'];
+        }else if(rule.type=="File System Rule"){
+            type = i18n['GINAUDIT0080M'];
+        }
+        rows += "<td>" + type + "</td>";
         var ruleDetails = rule.rule;
         var titleValue = "";
         var syscallStartIndex = ruleDetails.indexOf("-S");
@@ -1090,6 +1097,13 @@ $('#Audit-Rule-Edit-btn').click(function() {
             };
             wok.confirm(settings, function() {}, function() {});
         } else {
+            if(ruleName==i18n['GINAUDIT0078M']){
+                ruleName = "System Call Rule";
+            }else if(ruleName==i18n['GINAUDIT0079M']){
+                ruleName = "Control Rule";
+            }else if(ruleName==i18n['GINAUDIT0080M']){
+                ruleName = "File System Rule";
+            }
             if (ruleName == "File System Rule") {
                 wok.window.open('plugins/ginger/host-admin-EditAuditRule.html');
             } else if (ruleName == "Control Rule") {
@@ -1124,7 +1138,7 @@ $('#audit-rule-delete-btn').on('click', function(event) {
             selectedRows.push(value[2]);
         });
         var settings = {
-            content: i18n["GINAUDIT0022M"] + selectedRows,
+            content: i18n["GINAUDIT0022M"] + '<br>' + selectedRows,
             confirm: i18n["GINNET0015M"]
         };
         wok.confirm(settings, function() {
@@ -1181,7 +1195,7 @@ $('#Audit-Rule-Load-btn').on('click', function(event) {
             selectedRows.push(value[2]);
         });
         var settings = {
-            content: i18n["GINAUDIT0024M"] + selectedRows,
+            content: i18n["GINAUDIT0024M"] + '<br>' + selectedRows,
             confirm: i18n["GINNET0015M"]
         };
         wok.confirm(settings, function() {
@@ -1212,7 +1226,7 @@ $('#Audit-Rule-unload-btn').on('click', function(event) {
             selectedRows.push(value[2]);
         });
         var settings = {
-            content: i18n["GINAUDIT0026M"] + selectedRows,
+            content: i18n["GINAUDIT0026M"] + '<br>' + selectedRows,
             confirm: i18n["GINNET0015M"]
         };
         wok.confirm(settings, function() {
@@ -1247,7 +1261,7 @@ $('#Audit-Rule-Persist-btn').on('click', function(event) {
             selectedRows.push(value[2]);
         });
         var settings = {
-            content: i18n["GINAUDIT0028M"] + selectedRows,
+            content: i18n["GINAUDIT0028M"] + '<br>' + selectedRows,
             confirm: i18n["GINNET0015M"]
         };
         wok.confirm(settings, function() {
