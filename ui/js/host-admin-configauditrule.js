@@ -1,5 +1,5 @@
 /*
- * Copyright IBM Corp, 2016
+ * Copyright IBM Corp, 2016-2017
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -53,6 +53,10 @@ ginger.initConfigRule = function() {
         krb5_principle = $('#krb5_principle', AuditConfigTabs);
         krb5_key_file = $('#krb5_key_file', AuditConfigTabs);
         distribute_network = $('#distribute_network', AuditConfigTabs);
+
+        $('#Audit-Config-general').on('change', function(){
+            $("#AuditdConfig-submit").prop("disabled", false);
+        });
 
         //get details
         ginger.retrieveConfigInfo(function suc(result) {

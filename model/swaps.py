@@ -1,7 +1,7 @@
 #
 # Project Ginger
 #
-# Copyright IBM Corp, 2016
+# Copyright IBM Corp, 2016-2017
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -78,7 +78,7 @@ class SwapsModel(object):
 
             except (InvalidParameter) as e:
                 cb('OK', False)
-                raise InvalidParameter("GINSP00020E")
+                raise InvalidParameter("GINSP00020E", {'file': file_loc})
             except (OperationFailed) as e:
                 cb('OK', False)
                 raise OperationFailed('GINSP00005E',
