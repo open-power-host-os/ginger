@@ -1,7 +1,7 @@
 //
 // Project Ginger
 //
-// Copyright IBM Corp, 2016-2017
+// Copyright IBM Corp, 2016
 //
 // Code derived from Project Kimchi
 //
@@ -27,18 +27,14 @@
         margin: 0;
         background: transparent;
     }
-}
 
-#sysmodules-body .column-depends {
-    padding-left: 5px;
-}
-
-#sysmodules-body .column-version {
-    padding-left: 10px;
+    .accordion {
+        @include wok-accordion();
+    }
 }
 
 #sysmodules-content-area {
-    padding-bottom: 20px;
+    padding: 0;
     list-style-type: none;
     .li:nth-child(even) {
         background-color: #fcfcfc;

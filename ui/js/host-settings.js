@@ -36,11 +36,6 @@ ginger.sidebarObj = [
         title: i18n['System Services'],
         url: 'plugins/ginger/host-system-services.html',
         id: 'ginger-system-services'
-    },
-    {
-        title: i18n['System Modules'],
-        url: 'plugins/ginger/host-sysmodules.html',
-        id: 'ginger-system-modules'
     }
 ];
 

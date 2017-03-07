@@ -20,8 +20,6 @@
 
 #system-services-content-area {
 
-    padding-bottom: 20px;
-
     .well {
         overflow-y: scroll;
         border: 0;
@@ -53,9 +51,9 @@
         text-overflow: ellipsis;
         display: inline-block;
         @media (min-width: $screen-sm + 12) {
-            width: 16.2%;
-            min-width: 16.2%;
-            flex-basis: 16.2%;
+            width: 20.2%;
+            min-width: 20.2%;
+            flex-basis: 20.2%;
         }
     }
 
@@ -105,16 +103,16 @@
 
         @media (min-width: $screen-lg + 102) {
             display: inline-block;
-            width: 24.4%;
-            min-width: 24.4%;
-            flex-basis: 24.4%;
+            width: 28.4%;
+            min-width: 28.4%;
+            flex-basis: 28.4%;
         }
 
         @media (min-width: $screen-xlg) {
             display: inline-block;
-            width: 28.4%;
-            min-width: 28.4%;
-            flex-basis: 28.4%;
+            width: 33.4%;
+            min-width: 33.4%;
+            flex-basis: 33.4%;
         }
 
         @media (min-width: $screen-xlg + 140) {
