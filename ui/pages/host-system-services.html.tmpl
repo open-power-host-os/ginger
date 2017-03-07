@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+Copyright IBM Corp, 2016
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+#unicode UTF-8
+#import gettext
+#silent t = gettext.translation($lang.domain, $lang.localedir, languages=$lang.lang)
+#silent _ = t.gettext
+#silent _t = t.gettext
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="plugins/ginger/css/ginger.css">
+<script type="text/javascript" src="plugins/ginger/js/util.js"></script>
+<script type="text/javascript" src="plugins/ginger/js/host-system-services.js"></script>
+</head>
+<body>
+    <div id="host-system-services-root-container" class="ginger">
+        <div class="container">
+            <div id="gingerHostSystemServices" class="host-admin">
+                <div id="system-services-content-area">
+                    <div id="system-services-alert-container"></div>
+                    <div class="row grid-control">
+                        <div class="pull-right">
+                            <label for="search_input_system_services" class="sr-only">$_("Filter System Services"):</label>
+                            <input type="text" class="filter form-control search" id="search_input_system_services" placeholder="$_("Filter")">
+                        </div>
+                    </div>
+                    <div class="wok-datagrid" id="system-services-datagrid">
+                        <div class="wok-datagrid-header">
+                            <span class="column-service-name" data-placement="auto bottom" data-toggle="tooltip" title="$_('Name')">$_("Name")</span><!--
+                         --><span class="column-service-loaded" data-placement="auto bottom" data-toggle="tooltip" title="$_('Loaded')">$_("Loaded")</span><!--
+                         --><span class="column-service-status" data-placement="auto bottom" data-toggle="tooltip" title="$_('Status')">$_("Status")</span><!--
+                         --><span class="column-service-autostart" data-placement="auto bottom" data-toggle="tooltip" title="$_('Autostart')">$_("Autostart")</span><!--
+                         --><span class="column-service-details" data-placement="auto bottom" data-toggle="tooltip" title="$_('Details')">$_("Details")</span><!--
+                         --><span class="column-service-description" data-placement="auto bottom" data-toggle="tooltip" title="$_('Description')">$_("Description")</span><!--
+                         --><span class="column-service-actions" data-placement="auto bottom" data-toggle="tooltip" title="$_('Actions')"><span class="sr-only">$_("Actions")</span></span>
+                        </div>
+                        <div class="well">
+                            <ul class="wok-datagrid-body list" id="system-services-body"></ul>
+                            <div class="no-matching-data hidden">
+                                <span role="row">$_("No result found")</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script id="systemServicesItem" type="html/text">
+    <li class="wok-datagrid-row" id="{id}" data-id="{name}" role="row">
+        <span role="gridcell" class="column-service-name service-name-filter" title="{name}">{name}</span><!--
+        --><span role="gridcell" class="column-service-loaded service-loaded-filter">{loaded}</span><!--
+        --><span role="gridcell" class="column-service-status service-status-filter"><span class="label label-{label}"><i class="fa {icon}"></i> {status}</span></span><!--
+        --><span role="gridcell" class="column-service-autostart"><input type="checkbox" name="service-autostart[]" id="{servicename}" value="{servicename}" {checked} class="wok-toggleswitch-checkbox "><label for="{servicename}" class="wok-toggleswitch-label"><span class="sr-only">{autostartonoff}</span></label></span><!--
+        --><span role="gridcell" class="column-service-details"><span role="button" class="handle" data-toggle="collapse" data-target="#{collapse_target}"><i class="fa fa-chevron-down"></i></span></span><!--
+        --><span role="gridcell" title="{description}" class="column-service-description service-description-filter">{description}</span><!--
+        --><span role="gridcell" class="column-service-actions">
+                <span class="pull-right">
+                    <div class="dropdown menu-flat system-service-actions">
+                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                <span class="edit-alt"></span>$_("Actions")<span class="caret"></span>
+                         </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class='service-start' data-service="{name}" href="#"><i class="fa fa-power-off"></i>$_("Start")</a></li>
+                            <li><a class='service-restart' data-service="{name}" href="#"><i class="fa fa-refresh"></i>$_("Restart")</a></li>
+                            <li class='critical'><a class="service-stop" data-service="{name}" href="#"><i class="fa fa-stop"></i>$_("Stop")</a></li>
+                        </ul>
+                    </div>
+                </span>
+            </span>
+            <div role="gridcell" class="system-services-details">
+                <div role="grid" id="{collapse_target}" class="details-list collapse">
+                    <div class="system-services-cgroup wok-datagrid" role="grid">
+                        <div class="system-service-cgroup-header wok-datagrid-header" role="row">
+                            <span role="columnheader" class="column-service-cgroup">$_("Cgroup")</span>
+                        </div>
+                        <div class="system-service-cgroup-body wok-datagrid-body" role="row">
+                            <div class="wok-datagrid-row">
+                                <span class="column-service-cgroup">{cgroup}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="system-services-process wok-datagrid">
+                        <div class="system-service-process-header wok-datagrid-body" role="row">
+                            <span role="columnheader" class="column-cgroup-pid">$_("PID")</span>
+                            <span role="columnheader" class="column-cgroup-process">$_("Process")</span>
+                        </div>
+                        <ul class="system-service-process-body wok-datagrid-body" role="row">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div role="presentation" class="clear"></div>
+    </li>
+</script>
+<script id="systemServiceProcessItem" type="html/text">
+<li class="wok-datagrid-row" role="row">
+    <span class="column-cgroup-pid" role="gridcell">{pid}</span>
+    <span class="column-cgroup-process" role="gridcell">{process}</span>
+</li>
+</script>
+<script>
+    ginger.initSystemServices();
+</script>
+</body>
+</html>
